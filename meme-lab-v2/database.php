@@ -6,7 +6,7 @@ function getDatabaseConnection() {
         $host = "localhost";
         $username = "Michael";
         $password = "cst336"; // best practice: define this in a separte file
-        $dbname = "memes_v2"; 
+        $dbname = "lab7_all_memes"; 
     } else {
         // running on Heroku
         $host = "us-cdbr-iron-east-01.cleardb.net";
