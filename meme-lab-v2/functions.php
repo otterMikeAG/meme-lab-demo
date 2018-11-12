@@ -28,7 +28,10 @@ function searchForMemes($userID = "") {
     
     if(isset($_POST['search'])) {
       // query the databse for any records that match this search
-      $sql .= " AND (line1 LIKE '%{$_POST['search']}%' OR line2 LIKE '%{$_POST['search']}%')";
+      $sql .= " AND (line1 LIKE :search OR line2 LIKE :search)";
+     // $sql .= " AND (line1 LIKE '%{$_POST['search']}%' OR line2 LIKE '%{$_POST['search']}%')";
+
+        
     } 
     
     if(isset($_POST['meme-type-search']) && !empty($_POST['meme-type-search'])) {
@@ -36,7 +39,7 @@ function searchForMemes($userID = "") {
     }
     
     $statement = $dbConn->prepare($sql); 
-    $statement->execute(); 
+    $statement->execute(array(':search'=>'%'.$_POST['search'].'%')); 
     $records = $statement->fetchAll(); 
     
     return $records; 
@@ -133,7 +136,9 @@ function fetchMemeFromDB($memeID) {
 
 function createMeme($line1, $line2, $memeType) {
     global $dbConn; 
-    
+    echo "In create meme <br>";
+    echo $line1;
+    echo "<br>";
     //Step 1: Get the category ID for the selected meme type
     $categoryID = getCategoryID($memeType); 
     
