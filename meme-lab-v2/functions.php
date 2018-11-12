@@ -18,12 +18,12 @@ function searchForMemes($userID = "") {
     global $dbConn; 
     
     $sql = "SELECT
-        all_memes.id,
-        all_memes.line1, 
-        all_memes.line2, 
+        all_memes2.id,
+        all_memes2.line1, 
+        all_memes2.line2, 
         categories.meme_url 
-      FROM all_memes INNER JOIN categories 
-      ON all_memes.category_id = categories.category_id 
+      FROM all_memes2 INNER JOIN categories 
+      ON all_memes2.category_id = categories.category_id 
       WHERE 1"; 
     
     if(isset($_POST['search'])) {
@@ -86,12 +86,12 @@ function getCategoryID($memeType) {
 
 
 
-// INSERT the new meme into the all_memes table
+// INSERT the new meme into the all_memes2 table
 
 function insertMeme($line1, $line2, $categoryID) {
     global $dbConn; 
     
-    $sql = "INSERT INTO `all_memes` 
+    $sql = "INSERT INTO `all_memes2` 
       (`id`, `line1`, `line2`, `category_id`, `create_date`) 
       VALUES 
       (NULL, '$line1', '$line2', '$categoryID', NOW());"; 
@@ -111,14 +111,14 @@ function fetchMemeFromDB($memeID) {
     
   
   $sql = "SELECT
-      all_memes.id,
-      all_memes.line1, 
-      all_memes.line2, 
+      all_memes2.id,
+      all_memes2.line1, 
+      all_memes2.line2, 
       categories.meme_url,
       categories.meme_type
-    FROM all_memes INNER JOIN categories 
-    ON all_memes.category_id = categories.category_id 
-    WHERE all_memes.id = $memeID"; 
+    FROM all_memes2 INNER JOIN categories 
+    ON all_memes2.category_id = categories.category_id 
+    WHERE all_memes2.id = $memeID"; 
   
   
   $statement = $dbConn->prepare($sql); 
@@ -138,7 +138,7 @@ function createMeme($line1, $line2, $memeType) {
     $categoryID = getCategoryID($memeType); 
     
     //Step 2: Insert the meme information (along with the category ID) into the
-    // all_memes table
+    // all_memes2 table
     $result = insertMeme($line1, $line2, $categoryID); 
 
     //Step 3: Fetch the new meme joined with the meme_url information
@@ -157,9 +157,9 @@ function editMeme($id, $line1, $line2, $memeType) {
   $categoryID = getCategoryID($memeType); 
   
   
-  //Step 2: Update the meme record in the all_memes table
+  //Step 2: Update the meme record in the all_memes2 table
 
-  $sql = "UPDATE `all_memes` 
+  $sql = "UPDATE `all_memes2` 
             SET 
               line1 = :line1, 
               line2 = :line2, 
@@ -182,8 +182,8 @@ function deleteMemeFromDB($memeID) {
   global $dbConn; 
   
   $sql = "DELETE  
-    FROM all_memes  
-    WHERE all_memes.id = $memeID"; 
+    FROM all_memes2  
+    WHERE all_memes2.id = $memeID"; 
   
   
   $statement = $dbConn->prepare($sql); 
